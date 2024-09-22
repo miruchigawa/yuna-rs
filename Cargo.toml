@@ -1,0 +1,17 @@
+[package]
+name = "yuna-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15.0"
+env_logger = "0.11.5"
+poise = "0.6.1"
+
+[dependencies.tokio]
+version = "1.40.0"
+features = [ "macros", "rt-multi-thread" ]
+
+[dependencies.log]
+version = "0.4.22"
+features = [ "max_level_debug", "release_max_level_warn" ]
