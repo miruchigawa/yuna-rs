@@ -1,17 +1,9 @@
-mod commands;
-
 use std::{collections::HashMap, env, sync::Mutex};
 use poise::serenity_prelude as serenity;
 use env_logger::Builder;
 use log::LevelFilter;
 
-type Error = Box<dyn std::error::Error + Send + Sync>;
-type Context<'a> = poise::Context<'a, Data, Error>;
-
-
-pub struct Data {
-    user_backlist: Mutex<HashMap<String, bool>>,
-}
+use yuna_rs::{Data, Error, commands::{misc, owner}};
 
 async fn on_error(error: poise::FrameworkError<'_, Data, Error>) {
     match error {
@@ -33,16 +25,16 @@ async fn main() {
     dotenv::dotenv().ok();
 
     let options = poise::FrameworkOptions {
-        commands: vec![commands::ping(), commands::ban(), commands::unban()],
+        commands: vec![misc::ping(), owner::ban(), owner::unban()],
         on_error: |error| Box::pin(on_error(error)),
         pre_command: |ctx| {
             Box::pin(async move {
-                log::info!("Execute command {}...", ctx.command().qualified_name);
+                log::info!("Resolving {} requested from {}...", ctx.command().qualified_name, ctx.author().name);
             })
         },
         post_command: |ctx| {
             Box::pin(async move {
-                log::info!("Executed command {}!", ctx.command().qualified_name);
+                log::info!("Resolved {} requested from {}!", ctx.command().qualified_name, ctx.author().name);
             })
         },
         command_check: Some(|ctx| {
@@ -76,7 +68,7 @@ async fn main() {
         .options(options)
         .build();
 
-    let token = env::var("DISCORD_TOKEN").expect("Could't find DISCORD_TOKEN on environment variable");
+    let token = env::var("DISCORD_TOKEN").expect("Couldn't find DISCORD_TOKEN on environment variable");
     let intents = serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::GUILDS;
     let client = serenity::ClientBuilder::new(token, intents)
         .framework(framework)

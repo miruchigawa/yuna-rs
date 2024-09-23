@@ -14,4 +14,4 @@ features = [ "macros", "rt-multi-thread" ]
 
 [dependencies.log]
 version = "0.4.22"
-features = [ "max_level_debug", "release_max_level_warn" ]
+features = [ "max_level_debug", "release_max_level_info" ]
