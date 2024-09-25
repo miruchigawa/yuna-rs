@@ -3,7 +3,8 @@ use poise::serenity_prelude as serenity;
 use env_logger::Builder;
 use log::LevelFilter;
 
-use yuna_rs::{Data, Error, commands::{misc, owner}};
+use yuna_rs::commands::{misc, owner};
+use yuna_rs::prelude::*;
 
 async fn on_error(error: poise::FrameworkError<'_, Data, Error>) {
     match error {

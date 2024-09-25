@@ -1,4 +1,4 @@
-use crate::{Context, Error};
+use crate::prelude::*;
 use poise::serenity_prelude as serenity;
 
 /// Ban a user from bot
